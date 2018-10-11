@@ -12,7 +12,7 @@ public enum InvestingStyleDef {
     private final int polishPercentageShare;
     private final int foreignPercentageShare;
     private final int monetaryPercentageRatio;
-    private final static double HELPER_DIVIDER = 100;
+    private final static double ONE_HUNDRED = 100;
 
     InvestingStyleDef(int polishFunds, int foreignFunds, int monetaryFunds) {
         this.polishPercentageShare = polishFunds;
@@ -21,15 +21,15 @@ public enum InvestingStyleDef {
     }
 
     public double getPolishRatio() {
-        return polishPercentageShare / HELPER_DIVIDER;
+        return polishPercentageShare / ONE_HUNDRED;
     }
 
     public double getForeignRatio() {
-        return foreignPercentageShare / HELPER_DIVIDER;
+        return foreignPercentageShare / ONE_HUNDRED;
     }
 
     public double getMonetaryRatio() {
-        return monetaryPercentageRatio / HELPER_DIVIDER;
+        return monetaryPercentageRatio / ONE_HUNDRED;
     }
 }
 

@@ -41,7 +41,7 @@ public class Investor implements IInvestable {
                 moneyToInvest -= investmentCapital;
             }
             moneyToInvest += newInvestment.investmentCheck(newInvestment.getInvestMap());
-            moneyToInvest = Math.round(moneyToInvest);
+             Math.round(moneyToInvest);
             this.investmentList.add(newInvestment);
             return newInvestment;
         } else {
