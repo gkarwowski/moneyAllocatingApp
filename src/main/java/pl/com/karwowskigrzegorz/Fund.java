@@ -1,7 +1,5 @@
 package pl.com.karwowskigrzegorz;
 
-import pl.com.karwowskigrzegorz.constant.FundType;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -13,27 +11,57 @@ public class Fund {
 
     private int id;
     private String name;
-    private final FundType type;
+//    TODO: abstract fund type; create polish foreign monetary class;
+    private String type;
 
 
-    public Fund(String fundName, FundType fundType) {
+    /**
+     * Instantiates a new Fund.
+     *
+     * @param fundName the fund name
+     * @param fundType the fund type
+     */
+    public Fund(String fundName, String fundType) {
         this.name = fundName;
         this.type = fundType;
         id = uniqueId.incrementAndGet();
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     int getId() {
         return id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     String getName() {
         return name;
     }
 
-    FundType getType() {
+    /**
+     * Gets type.
+     *
+     * @return the type
+     */
+    String getType() {
         return type;
     }
 
+    /**
+     * Has name boolean.
+     *
+     * @param fundName the fund name
+     * @return the boolean
+     */
+
+    //TODO is this method really needed
     boolean hasName(String fundName) {
         return this.name.equals(fundName);
     }

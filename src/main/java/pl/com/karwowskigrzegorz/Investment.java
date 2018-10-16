@@ -24,6 +24,7 @@ class Investment {
         double investment;
         double fraction;
         Set<String> fractionType = new LinkedHashSet<>();
+        //TODO: stream()?
         for (Fund fund : investMap.keySet()) {
             investment = investMap.get(fund);
             fraction = Math.abs(investment - Math.floor(investment));
@@ -45,7 +46,6 @@ class Investment {
             }
             return 0;
         }
-
         return restFromInvestment;
     }
 

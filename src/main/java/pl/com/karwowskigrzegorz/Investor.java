@@ -1,59 +1,75 @@
 package pl.com.karwowskigrzegorz;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import pl.com.karwowskigrzegorz.constant.FundType;
-import pl.com.karwowskigrzegorz.constant.InvestingStyleDef;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * Created by gkarwows on 2018-09-04
+ * The type Investor.
  */
-
 public class Investor implements IInvestable {
+    private final static Logger logger = LogManager.getLogger(Investor.class);
 
     private double moneyToInvest = 0;
     private List<Investment> investmentList = new ArrayList<>();
     private FundsPacket fundsPacket = new FundsPacket();
-//    private InvestingStyleDef style;
 
-    public Investment invest(double money, InvestingStyleDef investingStyle) throws Exception {
+    public void invest(double money, InvestingStyle investingStyle) throws Exception {
 
-        if (money <= moneyToInvest && money > 0) {
-            Investment newInvestment = new Investment();
-            double investmentCapital;
-            int fundCount = 1;
-            double fundTypeRatio = 1;
+        Investment newInvestment = new Investment();
+        double investmentCapital;
+        int fundCount;
+        double fundTypeRatio;
 
+        if (canInvest(money)) {
             for (Fund fund : fundsPacket.getFunds()) {
-                if (fund.getType().equals(FundType.POLISH)) {
-                    fundCount = fundsPacket.getPolishCount();
-                    fundTypeRatio = investingStyle.getPolishRatio();
-                } else if (fund.getType().equals(FundType.FOREIGN)) {
-                    fundCount = fundsPacket.getForeignCount();
-                    fundTypeRatio = investingStyle.getForeignRatio();
-                } else if (fund.getType().equals(FundType.MONETARY)) {
-                    fundCount = fundsPacket.getMonetaryCount();
-                    fundTypeRatio = investingStyle.getMonetaryRatio();
-                }
+
+                fundCount = fundsPacket.getCount(fund.getType());
+                fundTypeRatio = investingStyle.getRatio(fund.getType());
 
                 investmentCapital = money * fundTypeRatio / fundCount;
                 newInvestment.getInvestMap().put(fund, investmentCapital);
                 moneyToInvest -= investmentCapital;
             }
-            moneyToInvest += newInvestment.investmentCheck(newInvestment.getInvestMap());
-             Math.round(moneyToInvest);
+
+            moneyToInvest += newInvestment.investmentCheck();
             this.investmentList.add(newInvestment);
-            return newInvestment;
-        } else {
-            throw new Exception("Investor doesn't have enough money for doing new investmentList");
         }
     }
 
-     FundsPacket getFundsPacket() {
+    private boolean canInvest(double money) {
+        if (money <= moneyToInvest && money > 0) {
+            if (fundsPacket.getFunds().size() > 0) {
+                return true;
+            } else {
+                logger.warn("You have to add at least one fund to your funds packet. Invest operation stopped.");
+                return false;
+            }
+        } else {
+            logger.warn("Investor doesn't have enough money for doing new investment");
+            return false;
+        }
+    }
+
+    /**
+     * Gets funds packet.
+     *
+     * @return the funds packet
+     */
+    FundsPacket getFundsPacket() {
         return fundsPacket;
     }
 
-     Investment getInvestmentId(int id) throws Exception {
+    /**
+     * Gets investment id.
+     *
+     * @param id the id
+     * @return the investment id
+     * @throws Exception the exception
+     */
+    Investment getInvestmentId(int id) throws Exception {
         if (investmentList.size() > id) {
             return investmentList.get(id);
         } else {
@@ -61,21 +77,40 @@ public class Investor implements IInvestable {
         }
     }
 
-     double getMoneyToInvest() {
+    /**
+     * Gets Investor's money to invest.
+     *
+     * @return the money to invest
+     */
+    double getMoneyToInvest() {
         return moneyToInvest;
     }
 
-     Investor(double amountOfMoney, FundsPacket fundsPacket) {
+    /**
+     * Instantiates a new Investor.
+     *
+     * @param amountOfMoney the amount of money
+     * @param fundsPacket   the funds packet
+     */
+    Investor(double amountOfMoney, FundsPacket fundsPacket) {
         this(amountOfMoney);
         this.fundsPacket = fundsPacket;
     }
 
-     Investor(double amountOfMoney) {
+    /**
+     * Instantiates a new Investor.
+     *
+     * @param amountOfMoney the amount of money
+     */
+    Investor(double amountOfMoney) {
         this();
         this.moneyToInvest = amountOfMoney;
     }
 
-     Investor() {
+    /**
+     * Instantiates a new Investor.
+     */
+    Investor() {
     }
 
 }
