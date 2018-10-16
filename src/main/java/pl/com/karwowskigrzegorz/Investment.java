@@ -1,21 +1,29 @@
 package pl.com.karwowskigrzegorz;
 
-import pl.com.karwowskigrzegorz.constant.FundType;
-import java.util.*;
+//import java.util.;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by gkarwows on 2018-09-04
  */
-
 class Investment {
 
     private Map<Fund, Double> investMap = new LinkedHashMap<>();
 
-     double investmentCheck(Map<Fund, Double> investMap) {
+    /**
+     * Investment check double.
+     *
+     * @return the double
+     */
+    double investmentCheck() {
         double restFromInvestment = 0;
         double investment;
         double fraction;
-        Set<FundType> fractionType = new LinkedHashSet<>();
+        Set<String> fractionType = new LinkedHashSet<>();
         for (Fund fund : investMap.keySet()) {
             investment = investMap.get(fund);
             fraction = Math.abs(investment - Math.floor(investment));
@@ -30,7 +38,7 @@ class Investment {
             return restFromInvestment;
         } else if (fractionType.size() == 1) {
             for (Fund fund : investMap.keySet()) {
-                if (fractionType.contains(fund.getType())){
+                if (fractionType.contains(fund.getType())) {
                     investMap.put(fund, investMap.get(fund) + Math.round(restFromInvestment));
                     break;
                 }
@@ -41,7 +49,12 @@ class Investment {
         return restFromInvestment;
     }
 
-     Map<Fund, Double> getInvestMap() {
+    /**
+     * Gets invest map.
+     *
+     * @return the invest map
+     */
+    Map<Fund, Double> getInvestMap() {
         return investMap;
     }
 }
