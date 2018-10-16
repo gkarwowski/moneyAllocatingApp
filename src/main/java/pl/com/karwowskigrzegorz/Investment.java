@@ -44,6 +44,17 @@ class Investment {
                     break;
                 }
             }
+            //TODO: stream()?
+//            the solution might be takeWhile()
+//            https://stackoverflow.com/questions/23308193/break-or-return-from-java-8-stream-foreach
+
+//            double finalRestFromInvestment = restFromInvestment;
+//            investMap.keySet().forEach(fund -> {
+//                final double rest = finalRestFromInvestment;
+//                                if (fractionType.contains(fund.getType())) {
+//                    investMap.put(fund, investMap.get(fund) + Math.round(rest));
+////                    break;
+//            }});
             return 0;
         }
         return restFromInvestment;

@@ -89,6 +89,6 @@ public class InvestingStyle {
 
     @Override
     public String toString() {
-        return "InvestingStyle = " + percentOfInvestmentPerFundType;
+        return "InvestingStyle =" + percentOfInvestmentPerFundType;
     }
 }

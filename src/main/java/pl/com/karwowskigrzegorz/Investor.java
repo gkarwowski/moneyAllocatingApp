@@ -1,6 +1,7 @@
 package pl.com.karwowskigrzegorz;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,26 +14,27 @@ public class Investor implements IInvestable {
     private final static Logger logger = LogManager.getLogger(Investor.class);
 
     private double moneyToInvest = 0;
-    private List<Investment> investmentList = new ArrayList<>();
+    private List<Investment> investmentList = new LinkedList<>();
     private FundsPacket fundsPacket = new FundsPacket();
 
-    public void invest(double money, InvestingStyle investingStyle) throws Exception {
+//    TODO: maybe Investor should have choice which funds to invest in
+//    public void invest(double money, InvestingStyle investingStyle, Fund[]/FundsPacket funds) {
+    public void invest(double money, InvestingStyle investingStyle) {
 
         Investment newInvestment = new Investment();
-        double investmentCapital;
-        int fundCount;
-        double fundTypeRatio;
 
         if (canInvest(money)) {
-            for (Fund fund : fundsPacket.getFunds()) {
-
-                fundCount = fundsPacket.getCount(fund.getType());
-                fundTypeRatio = investingStyle.getRatio(fund.getType());
-
-                investmentCapital = money * fundTypeRatio / fundCount;
-                newInvestment.getInvestMap().put(fund, investmentCapital);
-                moneyToInvest -= investmentCapital;
-            }
+            fundsPacket.getFunds().forEach(fund -> {
+                try {
+                    int fundCount = fundsPacket.getCount(fund.getType());
+                    double fundTypeRatio = investingStyle.getRatio(fund.getType());
+                    double investmentCapital = money * fundTypeRatio / fundCount;
+                    newInvestment.getInvestMap().put(fund, investmentCapital);
+                    moneyToInvest -= investmentCapital;
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+            });
 
             moneyToInvest += newInvestment.investmentCheck();
             this.investmentList.add(newInvestment);

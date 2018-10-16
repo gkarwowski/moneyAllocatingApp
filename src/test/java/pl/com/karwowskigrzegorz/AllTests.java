@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         FundTest.class,
         InvestorTest.class,
-        InvestorTestThirdVariant.class
+        InvestorTestThirdVariant.class,
+        InvestingStyleTest.class
 })
 public class AllTests {
 }
