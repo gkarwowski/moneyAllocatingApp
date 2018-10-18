@@ -10,14 +10,17 @@ import org.junit.Test;
 public class InvestorTestThirdVariant {
 
     private double moneyforInvestitions = 10001;
-    private Fund fundOne = new Fund("Fundusz Polski 1", "Polish");
-    private Fund fundTwo = new Fund("Fundusz Polski 2", "Polish");
-    private Fund fundThree = new Fund("Fundusz Polski 3", "Polish");
-    private Fund fundFour = new Fund("Fundusz Zagraniczny 2", "Foreign");
-    private Fund fundFive = new Fund("Fundusz Zagraniczny 3", "Foreign");
-    private Fund fundSix = new Fund("Fundusz Pieniężny 1", "Monetary");
+    private PolishType polishType = new PolishType();
+    private ForeignType foreignType = new ForeignType();
+    private MonetaryType monetaryType = new MonetaryType();
+    private Fund fundOne = new Fund("Fundusz Polski 1", polishType);
+    private Fund fundTwo = new Fund("Fundusz Polski 2", polishType);
+    private Fund fundThree = new Fund("Fundusz Polski 3", polishType);
+    private Fund fundFour = new Fund("Fundusz Zagraniczny 2", foreignType);
+    private Fund fundFive = new Fund("Fundusz Zagraniczny 3", foreignType);
+    private Fund fundSix = new Fund("Fundusz Pieniężny 1", monetaryType);
     private FundsPacket fundsPacket = new FundsPacket();
-    private Investor investor = new Investor(moneyforInvestitions, fundsPacket);
+    private FundInvestor investor = new FundInvestor(moneyforInvestitions, fundsPacket);
     private Fund[] funds = {fundOne, fundTwo, fundThree, fundFour, fundFive, fundSix};
     private InvestingStyle safe = new InvestingStyle();
 
@@ -26,10 +29,10 @@ public class InvestorTestThirdVariant {
         for (int fundIndex = 0; fundIndex < funds.length; fundIndex++){
             fundsPacket.addFund(funds[fundIndex]);
         }
-        safe.setPercentageOfInvestmentPerFundType(20, "Polish");
-        safe.setPercentageOfInvestmentPerFundType(75, "Foreign");
-        safe.setPercentageOfInvestmentPerFundType(15, "Monetary");
-        safe.setPercentageOfInvestmentPerFundType(5, "Monetary");
+        safe.setPercentageOfInvestmentPerFundType(20, polishType);
+        safe.setPercentageOfInvestmentPerFundType(75, foreignType);
+        safe.setPercentageOfInvestmentPerFundType(15, monetaryType);
+        safe.setPercentageOfInvestmentPerFundType(5, monetaryType);
     }
     @Test
     public void investTestThirdVariant() throws Exception {
@@ -40,5 +43,6 @@ public class InvestorTestThirdVariant {
         Assert.assertEquals(new Double(3750), investor.getInvestmentId(0).getInvestMap().get(fundFour));
         Assert.assertEquals(new Double(3750), investor.getInvestmentId(0).getInvestMap().get(fundFive));
         Assert.assertEquals(new Double(500), investor.getInvestmentId(0).getInvestMap().get(fundSix));
+        Assert.assertEquals(1, Math.round(investor.getAmountOfMoney()));
     }
 }

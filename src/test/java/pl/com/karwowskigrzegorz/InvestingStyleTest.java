@@ -15,14 +15,17 @@ import static java.util.stream.Collectors.toMap;
  */
 public class InvestingStyleTest {
 
-    Fund polishFund = new Fund("Polski Fundusz 1", "Polish");
+    PolishType polishType = new PolishType();
+    FundType foreignType = new ForeignType();
+    MonetaryType monetaryType = new MonetaryType();
+    Fund<PolishType> polishFund = new Fund("Polski Fundusz 1", polishType);
     InvestingStyle safe = new InvestingStyle();
 
     @Test
     public void getRatioTest() throws Exception {
-        Map<String, Integer> map = new HashMap<>(Stream.of(new AbstractMap.SimpleEntry<>("Polish", 20),
-                new AbstractMap.SimpleEntry<>("Foreign",  75),
-                new AbstractMap.SimpleEntry<>("Monetary", 5))
+        Map<FundType, Integer> map = new HashMap<>(Stream.of(new AbstractMap.SimpleEntry<>(polishType, 20),
+                new AbstractMap.SimpleEntry<>(foreignType,  75),
+                new AbstractMap.SimpleEntry<>(monetaryType, 5))
                 .collect(toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
         safe.setPercentageOfInvestmentPerFundType(map);
 
@@ -30,8 +33,8 @@ public class InvestingStyleTest {
 //        safe.setPercentageOfInvestmentPerFundType(75, "Foreign");
 //        safe.setPercentageOfInvestmentPerFundType(15, "Monetary");
 //        safe.setPercentageOfInvestmentPerFundType(5, "Monetary");
-        Assert.assertEquals(0.2 , safe.getRatio("Polish"), 0.0);
-        Assert.assertEquals(0.75 , safe.getRatio("Foreign"), 0.0);
-        Assert.assertEquals(0.05 , safe.getRatio("Monetary"), 0.0);
+        Assert.assertEquals(0.2 , safe.getRatio(polishType), 0.0);
+        Assert.assertEquals(0.75 , safe.getRatio(foreignType), 0.0);
+        Assert.assertEquals(0.05 , safe.getRatio(monetaryType), 0.0);
     }
 }

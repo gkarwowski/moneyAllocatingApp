@@ -5,9 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gkarwows on 2018-09-05
@@ -16,10 +13,12 @@ import java.util.List;
 public class FundTest {
 
     private final static Logger logger = LogManager.getLogger(FundTest.class);
-    private static Investor investor;
+    private static FundInvestor investor;
+    private static PolishType polishType = new PolishType();
+    private static ForeignType foreignType = new ForeignType();
+    private static MonetaryType monetaryType = new MonetaryType();
     private static String testFundName = "Fundusz Polski 1";
-    private static Fund testFund = new Fund(testFundName, "Polish");
-    private static Fund falseFund = new Fund("False Fund", "English");
+    private static Fund<PolishType> polishFund = new Fund(testFundName, polishType);
 
     static InvestingStyle safe = new InvestingStyle();
 
@@ -27,50 +26,28 @@ public class FundTest {
     @BeforeClass
     public static void setUp() {
         double moneyForInvestitions = 100000;
-        investor = new Investor(moneyForInvestitions, new FundsPacket());
-        investor.getFundsPacket().addFund(testFund);
-        safe.setPercentageOfInvestmentPerFundType(20, "Polish");
-        safe.setPercentageOfInvestmentPerFundType(75, "Foreign");
-        safe.setPercentageOfInvestmentPerFundType(15, "Monetary");
-        safe.setPercentageOfInvestmentPerFundType(5, "Monetary");
+        investor = new FundInvestor(moneyForInvestitions, new FundsPacket());
+        investor.getFundsPacket().addFund(polishFund);
+        safe.setPercentageOfInvestmentPerFundType(20, polishType);
+        safe.setPercentageOfInvestmentPerFundType(75, foreignType);
+        safe.setPercentageOfInvestmentPerFundType(15, monetaryType);
+        safe.setPercentageOfInvestmentPerFundType(5, monetaryType);
 
     }
 
     // Fund.Class
     @Test
     public void addFundTest() {
-        investor.getFundsPacket().addFund(testFund);
+        investor.getFundsPacket().addFund(polishFund);
         Assert.assertEquals(1, investor.getFundsPacket().getFunds().size());
     }
 
     @Test
     public void hasNameTest() {
-        Assert.assertTrue(testFund.hasName("Fundusz Polski 1"));
+        Assert.assertTrue(polishFund.hasName("Fundusz Polski 1"));
     }
 
-    // FundsPacket.Class
-    @Test
-    public void getFundByNameTest() {
-        try {
-            Assert.assertEquals(testFund, investor.getFundsPacket().getFundByName(testFundName));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-    }
-    @Test(expected = Exception.class)
-    public void getFundByNameExceptionTest() throws Exception {
-            investor.getFundsPacket().getFundByName("Uknown fund");
-    }
 
-    @Test
-    public void fundExistsTest() {
-        FundsPacket fundsPacket = new FundsPacket();
-        fundsPacket.addFund(testFund);
-
-        Assert.assertFalse(fundsPacket.fundExists(falseFund));
-        Assert.assertTrue(fundsPacket.fundExists(testFund));
-
-    }
 
     //Investor.Class
     @Test(expected = Exception.class)
@@ -85,13 +62,6 @@ public class FundTest {
 //    }
 
     //mockTest
-    @Mock
-    Investment investment;
-    @Test
-    public void add() {
-        List<Investment> investmentList = new ArrayList<>();
-        investmentList.add(investment);
-        Assert.assertEquals(1, investmentList.size());
-    }
+
 
 }

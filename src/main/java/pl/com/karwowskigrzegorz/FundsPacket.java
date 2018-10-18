@@ -3,9 +3,8 @@ package pl.com.karwowskigrzegorz;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -16,36 +15,7 @@ class FundsPacket {
     private final static Logger logger = LogManager.getLogger(FundsPacket.class);
 
     private Set<Fund> funds = new LinkedHashSet<>();
-    private Map<String, Integer> typeCounter = new HashMap<>();
 
-    /**
-     * Add funds packet.
-     *
-     * @param newFunds the new funds
-     */
-    void addFundsPacket(Set<Fund> newFunds) {
-        //TODO stream()?
-        for (Fund fund : newFunds) {
-            if (!fundExists(fund)) {
-                this.funds.add(fund);
-                incrementCounter(fund.getType());
-            }
-        }
-    }
-
-    /**
-     * Adds fund to set of funds and simultaneously increments counter for funds of given type.
-     *
-     * @param newfund the newfund
-     */
-    void addFund(Fund newfund) {
-        if (!fundExists(newfund)) {
-            funds.add(newfund);
-            incrementCounter(newfund.getType());
-        } else {
-            logger.warn("Fund \"{}\" couldn't be added", newfund.getName());
-        }
-    }
 
     /**
      * Fund exists boolean. Checks if fund exists in funds set field
@@ -53,7 +23,7 @@ class FundsPacket {
      * @param fund the fund
      * @return the boolean
      */
-    boolean fundExists(Fund fund) {
+    boolean fundExists(Fund fund) throws NullPointerException{
         return funds.stream().anyMatch(f -> f.hasName(fund.getName()));
     }
 
@@ -62,26 +32,54 @@ class FundsPacket {
      *
      * @param name the name
      * @return the fund by name
-     * @throws Exception the exception
+     * @throws NoSuchElementException the no such element exception
      */
-    Fund getFundByName(String name) throws Exception {
-        //TODO: stream()?
-        for (Fund fund : funds) {
-            if (fund.hasName(name)) {
-                return fund;
-            }
-        }
-        throw new Exception("No fund found with \"" + name + "\" name");
+    Fund getFundByName(String name) throws NoSuchElementException {
+
+           return funds.stream()
+                   .filter(fund ->  fund.hasName(name))
+                   .findFirst()
+                   .orElseThrow(() -> new NoSuchElementException("No fund with \"" + name + "\" name found."));
+
     }
 
-    private void incrementCounter(String fundType) {
-        if (typeCounter.containsKey(fundType)) {
-            typeCounter.put(fundType, typeCounter.get(fundType) + 1);
+    /**
+     * Gets number of the funds of given type in fundsPacket
+     *
+     * @param fundType the fund type
+     * @return the number
+     */
+    int getNumber(FundType fundType) {
+        return (int) funds.stream()
+                .filter(fund -> fund.getType().equals(fundType))
+                .count();
+    }
+
+    /**
+     * Adds fund to set of funds.
+     *
+     * @param newfund the newfund
+     */
+    void addFund(Fund newfund) {
+        if (fundExists(newfund)) {
+            logger.warn("Fund \"{}\" couldn't be added. It's not possible to have two funds with the same name",
+                    newfund.getName());
         } else {
-            typeCounter.put(fundType, 1);
+            funds.add(newfund);
+            System.out.println();
         }
     }
 
+    /**
+     * Adds set of funds to fundsPacket.
+     *
+     * @param newFunds the new funds
+     */
+    void addSetOfFunds(Set<Fund> newFunds) {
+        newFunds.stream()
+                .filter(fund -> !fundExists(fund))
+                .forEach(FundsPacket.this::addFund);
+    }
 
     /**
      * Gets funds.
@@ -90,15 +88,5 @@ class FundsPacket {
      */
     Set<Fund> getFunds() {
         return funds;
-    }
-
-    /**
-     * Gets count.
-     *
-     * @param fundType the fund type
-     * @return the count
-     */
-    int getCount(String fundType) {
-        return typeCounter.get(fundType);
     }
 }

@@ -10,6 +10,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         FundTest.class,
+        FundsPacketTest.class,
         InvestorTest.class,
         InvestorTestThirdVariant.class,
         InvestingStyleTest.class

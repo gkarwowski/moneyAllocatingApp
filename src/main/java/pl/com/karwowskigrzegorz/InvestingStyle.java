@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by gkarwows on 2018-10-12
@@ -14,7 +15,7 @@ public class InvestingStyle {
     private final static Logger logger = LogManager.getLogger(InvestingStyle.class);
     static final double ONE_HUNDRED = 100;
 
-    private Map<String, Integer> percentOfInvestmentPerFundType = new HashMap<>();
+    private Map<FundType, Integer> percentOfInvestmentPerFundType = new HashMap<>();
 
     /**
      * Gets ratio.
@@ -23,7 +24,7 @@ public class InvestingStyle {
      * @return the ratio
      * @throws Exception the exception
      */
-    double getRatio(String fundType) throws Exception {
+    double getRatio(FundType fundType) throws Exception {
         if (percentOfInvestmentPerFundType.containsKey(fundType)) {
             return percentOfInvestmentPerFundType.get(fundType) / ONE_HUNDRED;
         } else {
@@ -38,13 +39,13 @@ public class InvestingStyle {
      * @param percentage the percentage
      * @param fundType   the fund type
      */
-    void setPercentageOfInvestmentPerFundType(int percentage, String fundType) {
+    void setPercentageOfInvestmentPerFundType(int percentage, FundType fundType) {
         percentOfInvestmentPerFundType.put(fundType, percentage);
-        logger.info("Defining investing style...\n" + this.percentOfInvestmentPerFundType.toString());
-        if (!isDefinedCorrectly()) {
+        logger.info("Defining investing style...\n" + toString());
+        if (!definedCorrectly()) {
             percentOfInvestmentPerFundType.remove(fundType);
             logger.warn("Improper definition of investing style. Undoing your last definition...\n"
-                    + percentOfInvestmentPerFundType.toString());
+                    + toString());
         }
     }
 
@@ -53,14 +54,14 @@ public class InvestingStyle {
      *
      * @param percentOfInvestmentPerFundType the percent of investment per fund type
      */
-    void setPercentageOfInvestmentPerFundType(Map<String, Integer> percentOfInvestmentPerFundType) {
+    void setPercentageOfInvestmentPerFundType(Map<FundType, Integer> percentOfInvestmentPerFundType) {
         logger.info("Defining investing style...");
         this.percentOfInvestmentPerFundType.putAll(percentOfInvestmentPerFundType);
-        logger.info(this.percentOfInvestmentPerFundType.toString());
-        if (!isDefinedCorrectly()) {
+        logger.info(toString());
+        if (!definedCorrectly()) {
             percentOfInvestmentPerFundType.keySet().removeAll(percentOfInvestmentPerFundType.keySet());
             logger.warn("Improper definition of investing style. Undoing last definition...\n"
-                    + percentOfInvestmentPerFundType.toString());
+                    + toString());
         }
     }
 
@@ -69,7 +70,7 @@ public class InvestingStyle {
      *
      * @return the boolean
      */
-    boolean isDefinedCorrectly() {
+    boolean definedCorrectly() {
 
         int percentSum = percentOfInvestmentPerFundType.values().stream()
                 .mapToInt(percent -> percent.intValue())
@@ -89,6 +90,9 @@ public class InvestingStyle {
 
     @Override
     public String toString() {
-        return "InvestingStyle =" + percentOfInvestmentPerFundType;
+        return percentOfInvestmentPerFundType
+                .entrySet().stream()
+                .map(fundTypeIntegerEntry -> fundTypeIntegerEntry.getKey().getType() + " Type: " + fundTypeIntegerEntry.getValue() + ", ")
+                .collect(Collectors.joining());
     }
 }

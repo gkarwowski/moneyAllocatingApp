@@ -5,25 +5,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by gkarwows on 2018-09-04.
  */
-public class Fund {
+public class Fund<T extends FundType> {
 
     private static AtomicInteger uniqueId = new AtomicInteger();
 
     private int id;
     private String name;
-//    TODO: abstract fund type; create polish foreign monetary class;
-    private String type;
+    private T type;
 
-
-    /**
-     * Instantiates a new Fund.
-     *
-     * @param fundName the fund name
-     * @param fundType the fund type
-     */
-    public Fund(String fundName, String fundType) {
+    public Fund(String fundName, T type) {
         this.name = fundName;
-        this.type = fundType;
+        this.type = type;
         id = uniqueId.incrementAndGet();
     }
 
@@ -50,7 +42,7 @@ public class Fund {
      *
      * @return the type
      */
-    String getType() {
+    T getType() {
         return type;
     }
 
@@ -61,7 +53,6 @@ public class Fund {
      * @return the boolean
      */
 
-    //TODO is this method really needed
     boolean hasName(String fundName) {
         return this.name.equals(fundName);
     }

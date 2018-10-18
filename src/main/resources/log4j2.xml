@@ -12,7 +12,8 @@
                 </pattern>>
             </PatternLayout>
         </Console>
-        <RollingFile name="DAILY_LOG" fileName="${log-path}/${log-filename}.log" filePattern="${log-path}/${log-filename}.log-%d{yyyyMMdd}.log">
+        <RollingFile name="DAILY_LOG" fileName="${log-path}/${log-filename}.log"
+                     filePattern="${log-path}/${log-filename}.log-%d{yyyyMMdd}.log">
             <PatternLayout pattern="%5p [%d] - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1"/>
