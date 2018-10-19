@@ -7,16 +7,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The type Investor.
+ *  FundInvestor implements Investor interface
  */
 public class FundInvestor implements Investor {
+
     private final static Logger logger = LogManager.getLogger(Investor.class);
 
     private double amountOfMoney = 0;
     private List<Investment> investmentList = new LinkedList<>();
     private FundsPacket fundsPacket = new FundsPacket();
 
-    public void invest(double moneyToInvest, InvestingStyle investingStyle) {
+    /**
+     * Invests specified part of  money of FundInvestor instance in funds from funds packet
+     * using specified investing style
+     *
+     * @param moneyToInvest money to invest
+     * @param investingStyle used to do investment
+     * @return the newInvestment
+     * @throws Exception the exception
+     */
+    public Investment invest(double moneyToInvest, InvestingStyle investingStyle) {
 
         Investment newInvestment = new Investment();
         double investedMoney;
@@ -34,8 +44,18 @@ public class FundInvestor implements Investor {
             amountOfMoney += newInvestment.investmentCheck();
             this.investmentList.add(newInvestment);
         }
+        return newInvestment;
     }
 
+    /**
+     * Computes how much money shall be allocated to fund passed as parameter when using specified investing style
+     *
+     * @param moneyToInvest money to invest
+     * @param fund money to invest
+     * @param investingStyle investing style
+     * @return double value
+     * @throws Exception the exception
+     */
     private double allocationOfMoneyPerFund(double moneyToInvest, Fund fund, InvestingStyle investingStyle) throws Exception {
         try {
             int fundCount = fundsPacket.getNumber(fund.getType());
@@ -46,7 +66,12 @@ public class FundInvestor implements Investor {
             throw new Exception("Error during money per fund allocation!");
         }
     }
-
+    /**
+     * Checks if investor can invest specified amount of money
+     *
+     * @param moneyToInvest money to invest
+     * @return boolean value
+     */
     private boolean canInvest(double moneyToInvest) {
         if (moneyToInvest <= amountOfMoney && moneyToInvest > 0) {
             if (fundsPacket.getFunds().size() > 0) {
@@ -56,7 +81,7 @@ public class FundInvestor implements Investor {
                 return false;
             }
         } else {
-            logger.warn("Investor doesn't have enough money for doing new investment");
+            logger.warn("Fund Investor doesn't have enough money for doing new investments");
             return false;
         }
     }
@@ -86,16 +111,26 @@ public class FundInvestor implements Investor {
     }
 
     /**
-     * Gets Investor's money to invest.
+     * Gets amount of money.
      *
-     * @return the money to invest
+     * @return the amount of money
      */
     double getAmountOfMoney() {
         return amountOfMoney;
     }
 
+
     /**
-     * Instantiates a new Investor.
+     * Sets amount of money.
+     *
+     * @param amountOfMoney the amount of money
+     */
+    public void setAmountOfMoney(double amountOfMoney) {
+        this.amountOfMoney = amountOfMoney;
+    }
+
+    /**
+     * Instantiates a new Fund investor.
      *
      * @param amountOfMoney the amount of money
      * @param fundsPacket   the funds packet
@@ -106,7 +141,7 @@ public class FundInvestor implements Investor {
     }
 
     /**
-     * Instantiates a new Investor.
+     * Instantiates a new Fund investor.
      *
      * @param amountOfMoney the amount of money
      */
@@ -116,7 +151,7 @@ public class FundInvestor implements Investor {
     }
 
     /**
-     * Instantiates a new Investor.
+     * Instantiates a new Fund investor.
      */
     FundInvestor() {
     }

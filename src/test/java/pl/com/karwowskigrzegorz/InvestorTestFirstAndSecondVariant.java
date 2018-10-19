@@ -3,13 +3,23 @@ package pl.com.karwowskigrzegorz;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 import org.mockito.internal.util.collections.Sets;
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+        FundsPacketTest.class,
+        FundTest.class,
+        InvestorTestThirdVariant.class,
+        InvestingStyleTest.class,
+        InvestmentTest.class,
+        InvestorTestOtherCases.class
+})
 /**
  * Created by gkarwows on 2018-09-05
  */
 
-public class InvestorTest {
+public class InvestorTestFirstAndSecondVariant {
 
     static FundsPacket fundsPacket = new FundsPacket();
 
@@ -59,6 +69,12 @@ public class InvestorTest {
         Assert.assertEquals(new Double(2500), investor.getInvestmentId(0).getInvestMap().get(fundFive));
         Assert.assertEquals(new Double(500), investor.getInvestmentId(0).getInvestMap().get(fundSix));
         Assert.assertEquals(1, Math.round(investor.getAmountOfMoney()));
+    }
+
+    @Test
+    public void investWithoutMoney() {
+        investor.setAmountOfMoney(0);
+        investor.invest(10001, safe);
     }
 
 

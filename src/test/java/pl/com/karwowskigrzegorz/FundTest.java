@@ -1,18 +1,16 @@
 package pl.com.karwowskigrzegorz;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  * Created by gkarwows on 2018-09-05
  */
-
 public class FundTest {
 
-    private final static Logger logger = LogManager.getLogger(FundTest.class);
     private static FundInvestor investor;
     private static PolishType polishType = new PolishType();
     private static ForeignType foreignType = new ForeignType();

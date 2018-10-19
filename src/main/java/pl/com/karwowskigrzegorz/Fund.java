@@ -4,6 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by gkarwows on 2018-09-04.
+ *
+ * @param <T> the type parameter
  */
 public class Fund<T extends FundType> {
 
@@ -13,6 +15,12 @@ public class Fund<T extends FundType> {
     private String name;
     private T type;
 
+    /**
+     * Instantiates a new Fund.
+     *
+     * @param fundName the fund name
+     * @param type     the type
+     */
     public Fund(String fundName, T type) {
         this.name = fundName;
         this.type = type;
@@ -20,7 +28,7 @@ public class Fund<T extends FundType> {
     }
 
     /**
-     * Gets id.
+     * Gets fund id.
      *
      * @return the id
      */
@@ -47,12 +55,11 @@ public class Fund<T extends FundType> {
     }
 
     /**
-     * Has name boolean.
+     * Checks if fund has name passed as param
      *
      * @param fundName the fund name
      * @return the boolean
      */
-
     boolean hasName(String fundName) {
         return this.name.equals(fundName);
     }

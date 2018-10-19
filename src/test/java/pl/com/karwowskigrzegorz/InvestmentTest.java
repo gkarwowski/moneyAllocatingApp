@@ -12,12 +12,16 @@ import java.util.List;
  */
 public class InvestmentTest {
 
-    @Mock
     Investment investment;
     @Test
     public void add() {
         List<Investment> investmentList = new ArrayList<>();
         investmentList.add(investment);
         Assert.assertEquals(1, investmentList.size());
+    }
+
+    @Test
+    public void investmentCheckTest() {
+
     }
 }

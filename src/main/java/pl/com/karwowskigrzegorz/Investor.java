@@ -5,5 +5,5 @@ package pl.com.karwowskigrzegorz;
  */
 interface Investor {
 
-    void invest(double money, InvestingStyle investingStyle);
+    Investment invest(double money, InvestingStyle investingStyle);
 }
