@@ -24,13 +24,13 @@ must be performed. Invest() method takes two parameters - some part of money to 
 
 Tests
 --------------------
-Test of cases described in task description can be found in InvestorTestFirstAndSecond.class and InvestorTestThirdVariant.class.
-Launching InvestorTest.class causes launching suite of rest of the tests.
+Test of cases described in Task Documentation can be found in InvestorTestFirstAndSecond.class and InvestorTestThirdVariant.class.
+Launching InvestorTestFirstAndSecond.class causes launching suite of rest of the tests.
 
 still TODO
 --------------------
 The whole app would require to be refactored due to using double types instead of BigDecimal.
-Coverage of the test could be better. Exception/Sad path are margin
+Coverage of the test could be better. Exception/Sad path are margin.
 SpringBoot could be applied.
 
 
